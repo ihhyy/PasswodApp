@@ -9,9 +9,10 @@ namespace DAL.Interfaces
 {
     public interface IDataRepository
     {
-        Task<Data> GetAllDataByUserIdAsync(int id);
-        Task<Data> GetDataNameAsync(int id, string name);
-        Task<Data> DeleteDataNameAsync(int id, string name);
-        Task<Data> UpdateDataNameAsync(int id, Data data);
+        void SetNewData(Data data);
+        Task<List<Data>> GetAllDataByUserIdAsync(int userId);
+        Task<Data> GetDataByNameAsync(int userId, string name);
+        void DeleteDataByNameAsync(int userId, string name);
+        void UpdateDataByNameAsync(int userId, string name, Data data);
     }
 }
