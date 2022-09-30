@@ -24,7 +24,7 @@ namespace BL.Methods
         public async Task SetNewData(DataDto dataDto, string userName)
         {
             Data data = new();
-            data.Name = dataDto.Name;
+            data.Name = dataDto.SecretName;
 
             if(dataDto.Status == DAL.Statuses.Auto & dataDto.SecretLength != null)
             {
@@ -33,7 +33,7 @@ namespace BL.Methods
 
             else
             {
-                data.DataValue = dataDto.Password;
+                data.DataValue = dataDto.SecretValue;
             }
 
             data.Status = dataDto.Status;
@@ -46,8 +46,8 @@ namespace BL.Methods
         public async Task UpdateDataByName(string userName, string dataName, DataDto newData)
         {
             Data data = new();
-            data.Name = newData.Name;
-            data.DataValue = newData.Password;
+            data.Name = newData.SecretName;
+            data.DataValue = newData.SecretValue;
             await dataRepository.UpdateDataByNameAsync(userName, dataName, data);
         }
 

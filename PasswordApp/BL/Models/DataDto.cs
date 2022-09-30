@@ -9,9 +9,9 @@ namespace BL.Models
 {
     public class DataDto
     {
-        public string Name { get; set; }
+        public string SecretName { get; set; }
         public Statuses Status { get; set; }
-        public string? Password { get; set; }
+        public string? SecretValue { get; set; }
         public int? SecretLength { get; set; }
     }
 }
