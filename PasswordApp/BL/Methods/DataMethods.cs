@@ -25,7 +25,19 @@ namespace BL.Methods
         {
             Data data = new();
             data.Name = dataDto.Name;
-            data.DataValue = dataDto.Password;
+
+            if(dataDto.Status == DAL.Statuses.Auto & dataDto.SecretLength != null)
+            {
+                data.DataValue = GenerateNewSecret((int)dataDto.SecretLength);
+            }
+
+            else
+            {
+                data.DataValue = dataDto.Password;
+            }
+
+            data.Status = dataDto.Status;
+
             data.UserId = userRepository.GetUserByNameAsync(userName).Result.UserId;
 
             await dataRepository.SetNewData(data, userName);
@@ -47,6 +59,48 @@ namespace BL.Methods
         public async Task<Data> GetDataByNameAsync(string userName, string dataName)
         {
             return await dataRepository.GetDataByNameAsync(userName, dataName);
+        }
+
+        private string GenerateNewSecret(int length)
+        {
+            Random generator = new();
+
+            string secret = string.Empty;
+
+            for(int i = 0; i < length; i++)
+            {
+                var random = generator.Next(2);
+
+                if(random == 0)
+                {
+                    secret += GenerateRandomNumber();
+                }
+
+                else
+                {
+                    secret += GenerateRandomLetter();
+                }
+            }
+
+            return secret;
+        }
+
+        private char GenerateRandomLetter()
+        {
+            String str = "abcdefghijklmnopqrstuvwxyz";
+            var random = new Random();
+
+            if(random.Next(2) == 0)
+            {
+                return Char.ToUpper(str[random.Next(str.Length)]);
+            }
+
+            return str[random.Next(str.Length)];
+        }
+
+        private string GenerateRandomNumber()
+        {
+            return new Random().Next(10).ToString();
         }
     }
 }
