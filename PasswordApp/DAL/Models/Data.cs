@@ -11,7 +11,7 @@ namespace DAL.Models
         public int DataId { get; set; }
         public string Name { get; set; }
         public Statuses Status { get; set; }
-        public string Password { get; set; }
+        public string DataValue { get; set; }
         public int UserId { get; set; }
     }
 }

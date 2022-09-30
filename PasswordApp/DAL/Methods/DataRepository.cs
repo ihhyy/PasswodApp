@@ -6,78 +6,77 @@ namespace DAL.Methods
 {
     public class DataRepository : IDataRepository
     {
-        public async void DeleteDataByNameAsync(int userId, string name)
-        {
-            using (ApplicationContext context = new ApplicationContext())
-            {
-                var data = context.Datas.Where(x => x.UserId == userId && x.Name == name).FirstOrDefault();
-                if(data != null)
-                {
-                    context.Datas.Remove(data);
-                }
+        private readonly ApplicationContext context;
 
-                await context.SaveChangesAsync();
+        public DataRepository()
+        {
+            context = new ApplicationContext();
+        }
+
+        public async Task DeleteDataByNameAsync(string userName, string name)
+        {
+            var userId = GetUserIdByName(userName);
+            var data = await context.Datas.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if(data != null)
+            {
+                context.Datas.Remove(data);
+                context.SaveChanges();
             }
         }
 
-        public async Task<List<Data>?> GetAllDataByUserIdAsync(int userId)
+        public async Task<List<Data>> GetAllDataByUserNameAsync(string userName)
         {
-            using (ApplicationContext context = new ApplicationContext())
-            {
-                var datas = await context.Datas.Where(x => x.UserId == userId).ToListAsync();
+            var userId = GetUserIdByName(userName);
 
-                if (datas != null)
-                {
-                    return datas;
-                }
-                
-                return null;
+            if (userId != null)
+            {
+                return await context.Datas.Where(x => x.UserId == userId).ToListAsync();
+            }
+
+            return null;
+        }
+
+        public async Task<Data> GetDataByNameAsync(string userName, string dataName)
+        {
+            int userId = GetUserIdByName(userName);
+            var data = await context.Datas.Where(x => x.UserId == userId && x.Name == dataName).FirstAsync();
+            if(data != null)
+            {
+                return data;
+            }
+
+            return null;
+        }
+
+        public async Task SetNewData(Data data, string userName)
+        {
+            if (context.Users.Any(x => x.Datas.Any(y => y.Name == data.Name)))
+            {
+                throw new Exception();
+            }
+
+            context.Datas.Add(data);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateDataByNameAsync(string userName, string dataName, Data data)
+        {
+            int userId = GetUserIdByName(userName);
+            var dateToUpdate = await context.Datas.Where(x => x.UserId == userId && x.Name == dataName).FirstOrDefaultAsync();
+            if(dateToUpdate != null)
+            {
+                context.Entry(dateToUpdate).State = EntityState.Modified;
+                dateToUpdate.Status = data.Status;
+                dateToUpdate.DataValue = data.DataValue;
+                dateToUpdate.Name = data.Name;
+
+                context.SaveChanges();
             }
         }
 
-        public async Task<Data?> GetDataByNameAsync(int userId, string name)
+        private int GetUserIdByName(string userName)
         {
-            using (ApplicationContext context = new ApplicationContext())
-            {
-                var data = await context.Datas.Where(x => x.UserId == userId && x.Name == name).FirstAsync();
-                if(data != null)
-                {
-                    return data;
-                }
-
-                return null;
-            }
-        }
-
-        public async void SetNewData(Data data)
-        {
-            using(ApplicationContext context = new ApplicationContext())
-            {
-                if(context.Datas.Any(x => x.Name == data.Name))
-                {
-                    throw new Exception();
-                }
-
-                context.Datas.Add(data);
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public async void UpdateDataByNameAsync(int userId, string name, Data data)
-        {
-            using (ApplicationContext context = new ApplicationContext())
-            {
-                var dateToUpdate = context.Datas.Where(x => x.UserId == userId && x.Name == name).FirstOrDefault();
-                if(dateToUpdate != null)
-                {
-                    context.Entry(dateToUpdate).State = EntityState.Modified;
-                    dateToUpdate.Status = data.Status;
-                    dateToUpdate.Password = data.Password;
-                    dateToUpdate.Name = dateToUpdate.Name;
-                }
-
-                await context.SaveChangesAsync();
-            }
+            return context.Users.Where(x => x.UserName == userName).FirstOrDefault().UserId;
         }
     }
 }
