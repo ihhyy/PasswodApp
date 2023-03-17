@@ -3,14 +3,14 @@ using BL.Models;
 using DAL.Interfaces;
 using DAL.Models;
 
-namespace BL.Methods
+namespace BL.Services
 {
-    public class DataMethods : IDataMethods
+    public class DataService : IDataMethods
     {
-        private IDataRepository dataRepository;
-        private IUserRepository userRepository;
+        private readonly IDataRepository dataRepository;
+        private readonly IUserRepository userRepository;
 
-        public DataMethods(IDataRepository _dataRepository, IUserRepository _userRepository)
+        public DataService(IDataRepository _dataRepository, IUserRepository _userRepository)
         {
             dataRepository = _dataRepository;
             userRepository = _userRepository;

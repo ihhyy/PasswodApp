@@ -1,8 +1,6 @@
 ﻿using BL.Interfaces;
-using BL.Methods;
 using BL.Models;
 using DAL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

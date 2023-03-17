@@ -1,27 +1,23 @@
 ﻿using BL.Interfaces;
 using BL.Models;
 using DAL.Interfaces;
-using DAL.Methods;
 using DAL.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BL.Methods
+namespace BL.Services
 {
-    public class UserMethods : IUserMethods
+    public class UserService : IUserMethods
     {
         private readonly IUserRepository userRepository;
         private readonly IConfiguration configuration;
 
-        public UserMethods(IUserRepository _userRepository, IConfiguration _configuration)
+        public UserService(IUserRepository _userRepository, IConfiguration _configuration)
         {
-
             userRepository = _userRepository;
             configuration = _configuration;
         }
