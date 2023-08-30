@@ -13,5 +13,7 @@ namespace DAL.Models
         public Statuses Status { get; set; }
         public string DataValue { get; set; }
         public int UserId { get; set; }
+        public int? SecretLength { get; set; }
+        public int? PasswordLifeTime { get; set; }
     }
 }

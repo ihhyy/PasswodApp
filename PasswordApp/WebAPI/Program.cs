@@ -1,7 +1,7 @@
 using BL.Interfaces;
-using BL.Methods;
+using BL.Services;
 using DAL.Interfaces;
-using DAL.Methods;
+using DAL.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -10,14 +10,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IUserMethods, UserMethods>();
-builder.Services.AddScoped<IDataMethods, DataMethods>();
+builder.Services.AddScoped<IUserMethods, UserService>();
+builder.Services.AddScoped<IDataMethods, DataService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDataRepository, DataRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Configuration.AddJsonFile("appsettings.json");
 
 var configuration = builder.Configuration;

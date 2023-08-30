@@ -2,7 +2,7 @@
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.Methods
+namespace DAL.Repositories
 {
     public class DataRepository : IDataRepository
     {
@@ -71,7 +71,7 @@ namespace DAL.Methods
                 dateToUpdate.Name = data.Name;
 
                 context.SaveChanges();
-            }
+            }   
         }
 
         private int GetUserIdByName(string userName)

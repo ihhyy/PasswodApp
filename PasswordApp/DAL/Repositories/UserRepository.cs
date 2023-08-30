@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Methods
-{
+namespace DAL.Repositories
+{ 
     public class UserRepository : IUserRepository
     {
         public async Task<User> GetUserByNameAsync(string userName)

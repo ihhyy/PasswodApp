@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Methods
+namespace DAL.Repositories
 {
     public class ApplicationContext : DbContext
     {
